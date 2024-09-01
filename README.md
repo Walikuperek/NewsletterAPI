@@ -13,7 +13,7 @@ await client.subscribers.addNewSubscriber('email@em.com', 'Full Name') // will s
 const fetch = require('node-fetch')
 const client = NewsletterAPIClient(fetch)
 const jwt = await client.auth.login('admin', 'password')
-await client.subscribers.sendNewsletterToAuthorizedSubscribers(jwt)
+await client.subscribers.sendNewsletterToAuthorizedSubscribers(jwt, 'subject', '1st newletter message 🎉🎂')
 ```
 
 ## Purpose
