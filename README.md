@@ -1,7 +1,7 @@
 # NewsletterAPI
 NewsletterAPI written in JS with Express. Change to any DB with 1 file change, same with Email provider.
 
-Deploy anywhere, already prepared for Google Cloud Platform(App Engine with SQL/Datastore/SQLite[sqlite is notForProduction])
+Deploy anywhere, already prepared for Google Cloud Platform(App Engine with SQL/Datastore/SQLite[sqlite is notForProduction on AppEngine!])
 
 ## Purpose
 - Add new subscriber on newsletter submit(sends an email)
