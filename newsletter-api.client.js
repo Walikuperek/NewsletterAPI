@@ -8,28 +8,28 @@
  *  const fetch = require('node-fetch')
  *  const client = NewsletterAPIClient(fetch)
  *  const jwt = await client.auth.login('admin', 'password')
- *  await client.subscribers.sendNewsletterToAuthorizedSubscribers(jwt, 'subject', '1st newletter message 🎉🎂')
+ *  await client.subscribers.sendNewsletterToAuthorizedSubscribers(jwt, 'subject', '1st newsletter message 🎉🎂')
  */
 function NewsletterAPIClient(fetchFn) {
     return {
         auth: {
-            login: async (username, password) => await postData('/api/auth/login', {username, password})["token"],
-            signup: async (jwt, username, password) => await postData('/api/auth/login', {username, password}, {'Authorization': jwt})
+            login: async (username, password) => await postData(fetchFn, '/api/auth/login', {username, password})["token"],
+            signup: async (jwt, username, password) => await postData(fetchFn, '/api/auth/login', {username, password}, {'Authorization': jwt})
         },
         subscribers: {
-            authorizeSubscriber: async (token) => await getData(`/api/subscribers/confirm/${token}`),
-            addNewSubscriber: async (email, name) => await postData(`/api/subscribers/`, {email, name}),
-            getAuthorizedSubscribers: async (jwt) => await getData(`/api/subscribers/`, {}, {'Authorization': jwt}),
-            deleteSubscriber: async (jwt, id) => await deleteData(`/api/subscribers/${id}`, {'Authorization': jwt}),
+            authorizeSubscriber: async (token) => await getData(fetchFn, `/api/subscribers/confirm/${token}`),
+            addNewSubscriber: async (email, name) => await postData(fetchFn, `/api/subscribers/`, {email, name}),
+            getAuthorizedSubscribers: async (jwt) => await getData(fetchFn, `/api/subscribers/`, {}, {'Authorization': jwt}),
+            deleteSubscriber: async (jwt, id) => await deleteData(fetchFn, `/api/subscribers/${id}`, {'Authorization': jwt}),
             sendNewsletterToAuthorizedSubscribers: async (jwt, subject, message) =>
-                await postData(`/api/subscribers/send`, {subject, message}, {'Authorization': jwt})
+                await postData(fetchFn, `/api/subscribers/send`, {subject, message}, {'Authorization': jwt})
         }
     }
 }
 
-async function getData(url, headers = {}) {
+async function getData(fetchFn, url, headers = {}) {
     try {
-        const response = await fetch(url, {headers});
+        const response = await fetchFn(url, {headers});
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -39,9 +39,9 @@ async function getData(url, headers = {}) {
     }
 }
 
-async function postData(url, payload = {}, headers = {}) {
+async function postData(fetchFn, url, payload = {}, headers = {}) {
     try {
-        const response = await fetch(url, {
+        const response = await fetchFn(url, {
             method: 'POST',
             headers: {
                 ...headers,
@@ -59,9 +59,9 @@ async function postData(url, payload = {}, headers = {}) {
     }
 }
 
-async function deleteData(url, headers = {}) {
+async function deleteData(fetchFn, url, headers = {}) {
     try {
-        const response = await fetch(url, {
+        const response = await fetchFn(url, {
             method: 'DELETE',
             headers
         });
