@@ -3,6 +3,19 @@ NewsletterAPI written in JS with Express. Change to any DB with 1 file change, s
 
 > Deploy anywhere, already prepared for Google Cloud Platform(App Engine with SQL/Datastore/SQLite[sqlite is notForProduction on AppEngine!])
 
+NewsletterAPI Client usage:
+```javascript copy
+// Browser
+const client = NewsletterAPIClient(fetch)
+await client.subscribers.addNewSubscriber('email@em.com', 'Full Name') // will send confirmation email
+
+// NodeJS
+const fetch = require('node-fetch')
+const client = NewsletterAPIClient(fetch)
+const jwt = await client.auth.login('admin', 'password')
+await client.subscribers.sendNewsletterToAuthorizedSubscribers(jwt)
+```
+
 ## Purpose
 - Add new subscriber on newsletter submit(sends an email)
 - Confirm subscription by visiting provided link
