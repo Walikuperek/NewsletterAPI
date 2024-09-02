@@ -18,6 +18,7 @@ function NewsletterAPIClient(fetchFn) {
         },
         subscribers: {
             authorizeSubscriber: async (token) => await getData(fetchFn, `/api/subscribers/confirm/${token}`),
+            unsubscribeSubscriber: async (token) => await getData(fetchFn, `/api/subscribers/unsubscribe/${token}`),
             addNewSubscriber: async (email, name) => await postData(fetchFn, `/api/subscribers/`, {email, name}),
             getAuthorizedSubscribers: async (jwt) => await getData(fetchFn, `/api/subscribers/`, {}, {'Authorization': jwt}),
             deleteSubscriber: async (jwt, id) => await deleteData(fetchFn, `/api/subscribers/${id}`, {'Authorization': jwt}),
