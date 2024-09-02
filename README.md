@@ -19,6 +19,7 @@ await client.subscribers.sendNewsletterToAuthorizedSubscribers(jwt, 'subject', '
 ## Purpose
 - Add new subscriber on newsletter submit(sends an email)
 - Confirm subscription by visiting provided link
+- Unsubscribe if needed
 - Send newsletter to every authorized subscriber
 
 ## Features
@@ -70,6 +71,7 @@ Newsletter public:
 ```
 POST    addNewSubscriber         /api/subscribers/
 GET     confirmSubscription      /api/subscribers/confirm/:token
+GET     unsubscribeSubscriber    /api/subscribers/unsubscribe/:token
 ```
 
 Newsletter protected:

@@ -32,10 +32,13 @@ async function addNewSubscriber(req, res) {
  */
 async function sendConfirmationEmail(to, token) {
     const confirmUrl = `${process.env.APP_URL}/api/subscribers/confirm/${token}`;
+    const text = `Click the following link to confirm your subscription: ${confirmUrl}.
+
+    Ignore this email if this was not your intention to register at newsletter.`;
     const mailOptions = {
         to,
         subject: 'Confirm your subscription',
-        text: `Click the following link to confirm your subscription: ${confirmUrl}.\n\nIgnore this email if this was not your intention to register at newsletter.`,
+        text,
         onDone: responseText => console.log(`Confirmation email sent to ${to}:`, responseText),
         onError: err => console.error(`Error sending confirmation email to ${to}:`, err)
     };

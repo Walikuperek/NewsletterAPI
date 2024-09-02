@@ -29,10 +29,11 @@ async function sendNewsletterToAuthorizedSubscribers(req, res) {
  * @param {string} text Newsletter message
  */
 async function sendNewsletterEmail(to, subject, text) {
+    const unsubscribeUrl = `${process.env.APP_URL}/api/subscribers/unsubscribe/${token}`;
     const mailOptions = {
         to,
         subject,
-        text,
+        text: text + `\n\nUnsubscribe permanently by clicking this link: ${unsubscribeUrl}.`,
         onDone: responseText => console.log(`sent Newsletter to ${to}:`, responseText),
         onError: err => console.error(`Error sending Newsletter to ${to}:`, err)
     };
