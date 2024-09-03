@@ -1,9 +1,9 @@
 # NewsletterAPI
 NewsletterAPI written in JS with Express. Change to any DB with 1 file change, same with Email provider.
 
-> Deploy anywhere, already prepared for Google Cloud Platform(App Engine with SQL/Datastore/SQLite[sqlite is notForProduction on AppEngine!])
+> Deploy anywhere, already prepared for Google Cloud Platform(App Engine with SQL/SQLite[sqlite is notForProduction on AppEngine!])
 
-NewsletterAPI Client usage:
+NewsletterAPI with Client usage:
 ```javascript copy
 // Browser
 const client = NewsletterAPIClient(fetch)
@@ -13,7 +13,7 @@ await client.subscribers.addNewSubscriber('email@em.com', 'Full Name') // will s
 const fetch = require('node-fetch')
 const client = NewsletterAPIClient(fetch)
 const jwt = await client.auth.login('admin', 'password')
-await client.subscribers.sendNewsletterToAuthorizedSubscribers(jwt, 'subject', '1st newsletter message 🎉🎂')
+await client.subscribers.sendNewsletter(jwt, 'subject', '1st newsletter message 🎉🎂')
 ```
 
 ## Purpose
@@ -26,8 +26,8 @@ await client.subscribers.sendNewsletterToAuthorizedSubscribers(jwt, 'subject', '
 - Rate limiting for possible attacks (100/min)
 - Authentication JWT
 - GCP Deployment
-- Switch to any DB you need (SQL, SQLite, Datastore)
-- Switch to any Email provider (Gmail, SendGrid)
+- Switch to any DB you need (SQL, SQLite, any)
+- Switch to any Email provider (Gmail, SendGrid, any)
 
 ## Usage
 Local usage:
@@ -37,7 +37,7 @@ $ npm run start  # will serve on 3000 with SQLite applied for local testing
 ```
 
 Deploy to serverless AppEngine(Google Cloud Platform):
-> Requires `gcloud` cli.
+> Requires `gcloud` cli and proper account configuration.
 ```bash copy
 $ npm run deploy  # will create `app.yaml` based on `.env` file
 ```
