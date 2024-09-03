@@ -3,6 +3,10 @@ NewsletterAPI written in JS with Express. Change to any DB with 1 file change, s
 
 > Deploy anywhere, already prepared for Google Cloud Platform(App Engine with SQL/SQLite[sqlite is notForProduction on AppEngine!])
 
+| Related    | Link                                                     |
+|------------|----------------------------------------------------------|
+| API-client | [Repository](https://github.com/Walikuperek/API-clients) |
+
 NewsletterAPI with Client usage:
 ```javascript copy
 // Browser
@@ -28,6 +32,10 @@ await client.subscribers.sendNewsletter(jwt, 'subject', '1st newsletter message 
 - GCP Deployment
 - Switch to any DB you need (SQL, SQLite, any)
 - Switch to any Email provider (Gmail, SendGrid, any)
+
+## Risk
+- Remember that anyone can try to brute-force your public: `smth/:token` (so we limit to ~100 req/min)
+- Go creative with initial admin account credentials, so attackers will need to spent million years on them
 
 ## Usage
 Local usage:
@@ -61,22 +69,22 @@ APP_URL=https://your-app-url.com
 
 ### Endpoints
 
-Authentication:
-```
-POST    getToken                 /api/auth/login body {username, password} => JWT_TOKEN
-POST    registerUser             /api/auth/register body {username, password} header {authorization: <JWT_HERE>}
-```
+#### Authentication:
+| Action       | Method | Endpoint                                                                          | Returns   |
+|--------------|--------|-----------------------------------------------------------------------------------|-----------|
+| getToken     | POST   | /api/auth/login, body {username, password}                                        | JWT_TOKEN |
+| registerUser | POST   | /api/auth/register, body {username, password}, header {Authorization: <JWT_HERE>} |           |
 
-Newsletter public:
-```
-POST    addNewSubscriber         /api/subscribers/
-GET     confirmSubscription      /api/subscribers/confirm/:token
-GET     unsubscribeSubscriber    /api/subscribers/unsubscribe/:token
-```
+#### Public:
+| Action                | Method | Endpoint                                 | Body                     |
+|-----------------------|--------|------------------------------------------|--------------------------|
+| addNewSubscriber      | POST   | /api/subscribers/                        | {username, password}     |
+| confirmSubscription   | GET    | /api/subscribers/confirm/:token          |                          |
+| unsubscribeSubscriber | GET    | /api/subscribers/unsubscribe/:token      |                          |
 
-Newsletter protected:
-```
-GET     getAuthorizedSubscribers /api/subscribers/ header {authorization: <JWT_HERE>}
-DELETE  deleteSubscriber         /api/subscribers/:id header {authorization: <JWT_HERE>}
-POST    sendNewsletter           /api/subscribers/send header {authorization: <JWT_HERE>}
-```
+#### Protected:
+| Action                  | Method | Endpoint                                 | Body                     | Header                                |
+|-------------------------|--------|------------------------------------------|--------------------------|---------------------------------------|
+| getAuthorizedSubscribers| GET    | /api/subscribers/                        |                          | {Authorization: `<JWT_HERE>`}         |
+| deleteSubscriber        | DELETE | /api/subscribers/:id                     |                          | {Authorization: `<JWT_HERE>`}         |
+| sendNewsletter          | POST   | /api/subscribers/send                    | {subject, text}          | {Authorization: `<JWT_HERE>`}         |
